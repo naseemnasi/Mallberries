@@ -34,6 +34,7 @@ class Register(models.Model):
         except:
             return False
 
+
     def isExists(self):
         if Register.objects.filter(email=self.email):
             return True

@@ -62,7 +62,18 @@ def login(request):
     else:
         email = request.POST.get('email')
         password = request.POST.get('password')
+        customer = Register.get_customer_by_email(email)
+        if customer:
+            flag = check_password(password, customer.password)
+            if flag:
+                return redirect('index')
+            else:
+                error_message = 'Email or Password Incorrect!!'
+        else:
+            error_message = 'Email or Password Incorrect!!'
+        print(customer)
         print(email,password)
+        return render(request,'login.html',{'error':error_message})
 
 
     # def get(self, request):
@@ -114,6 +125,7 @@ def register(request):
             error_message = 'Email Already Exist'
         if not error_message:
             print(name, email, phone, password)
+            customer.password = make_password(customer.password)
 
         customer.register()
         return redirect("index")

@@ -33,6 +33,11 @@
 				<strong>{{ form.radio.errors|escape }}</strong>
 			</div>
 		{% endif %}
+		{% if error %}
+		 <div class="alert alert-danger" role="alert">
+		{{error}}
+		 </div>
+		{% endif %}
 		<div class="wrapper" style="background:white;">
 			<div class="inner">
 				<div class="image-holder">

@@ -21,6 +21,11 @@
 					<img src="static/image/product/details/product-details-5.jpg" alt="">
 				</div>
 				<form action="#" method="POST">{% csrf_token %}
+					{% if error %}
+                     <div class="alert alert-danger" role="alert">
+                    {{error}}
+					 </div>
+					{% endif %}
 					<h3>Login Form</h3>
 					<div class="form-wrapper">
 						<input type="text" placeholder="Email Address" name="email" value="{{values.email}}" class="form-control">
