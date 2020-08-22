@@ -1,0 +1,86 @@
+ {% extends 'ad_mall.html' %}
+ {% block content %}
+
+
+{% if form.errors %}
+  {% for field in form %}
+      {% for error in field.errors %}
+          <div class="alert alert-danger">
+              <strong>{{field.label}} : {{ error|escape }}</strong>
+          </div>
+      {% endfor %}
+  {% endfor %}
+  {% for error in form.non_field_errors %}
+      <div class="alert alert-danger">
+          <strong>{{ error|escape }}</strong>
+      </div>
+  {% endfor %}
+  {% endif %}
+  <style>
+ table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+</style>
+<script>
+    var loadFile = function(event) {
+        var image = document.getElementById('output');
+        image.src = URL.createObjectURL(event.target.files[0]);
+    };
+</script>
+<script>
+function myFunction() {
+        return confirm("Press OK to Delete Record !");
+      }
+</script>
+ <br>
+      <h4 style="color:black;font-size:24px;">ADD NEW PRODUCT</h4>
+      <hr>
+
+        <div class="productadd">
+
+    <div class="col-md-6">
+        <form method = "POST" enctype="multipart/form-data">{% csrf_token %}
+
+            <label>Product Name  : </label>
+            <input type="text" name="{{ form.pname.name }}"><br><br>
+            <label>Category  : </label>
+            <select name="{{ form.c_name.name }}">
+             {% for choice in form.c_name.field.choices %}
+              <option value="{{ choice.0 }}"> {{ choice.1 }} </option>
+             {% endfor %}
+            </select><br><br>
+            <label>Image : </label>
+            <input type="file"  id="myFile"  name="{{ form.pimage.name }}" accept="image/*" onchange="loadFile(event)" ><br>
+            <label>Description : </label>
+            <input type="text"  name="{{ form.pdesc.name }}" ><br><br><br>
+            <label>Price :&nbsp; </label>
+            <input type="text" name="{{ form.price.name }}"><br><br>
+            <label>Size : &nbsp;</label>
+            <input type="text" name="{{ form.size.name }}"><br><br>
+            <label>Stock : </label>
+            <input type="text" name="{{ form.stock.name }}"><br><br>
+
+          <button type="submit" class="btn btn-success" > ADD PRODUCT </button>
+        </form>
+    </div>
+    <div class="col-md-4">
+     <img id="output" width="200" />
+    </div>
+    </div>
+
+
+
+{% endblock %}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MallBerry ADMIN_LOGIN</title>
+    <link rel="stylesheet" href="{% static 'css/log.css'%}">
+
+</head>
+<body>
+<form action="ad_login" method="POST" class="login-form">{% csrf_token %}
+        <div class="body"></div>
+		<div class="grad"></div>
+		<div class="header">
+			<div style="font-family:Cooper Black;">MallBerry</div>
+		</div>
+		<br>
+		<div class="login">
+				<input type="text" placeholder="username" name="username"><br>
+				<input type="password" placeholder="password" name="password"><br>
+				<input type="submit" class="logbtn" value="Login">
+		{%if login_status %}
+        <p class="text-center" style="color:#fff">{{login_status}}</p>
+        {% endif %}
+
+		</div>
+
+</form>
+<script type="text/javascript">
+$(".txtb input").on("focus",function(){
+$(this).addClass("focus");
+});
+
+$(".txtb input").on("blur",function(){
+if($(this).val() == "")
+$(this).removeClass("focus");
+});
+
+</script>
+
+
+</body>
+</html>

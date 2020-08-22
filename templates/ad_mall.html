@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>MallBerry ADMIN</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
+<!--    .row.content {height: 1500px}-->
+
+    /* Set gray background color and 100% height */
+    .sidenav {
+      background-color: #f1f1f1;
+      height: 100%;
+
+    }
+
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+    }
+
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height: auto;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="container-fluid">
+  <div class="row content">
+    <div class="col-sm-3 sidenav" style="background-color: #D2E9DA;">
+      <ul class="nav nav-pills nav-stacked" >
+        <br>
+        <li class="active"><a href="ad_mall" style="background-color:#58949C;font-size:25px;font-family:Cooper Black">MALLBERRY</a></li>
+        <li><a href="ad_addpro">PRODUCTS</a></li>
+        <li><a href="#">CART</a></li>
+        <li><a href="#">USERS</a></li>
+        <li><a href="#">OTHERS</a></li>
+        <li style="background-color:white"><a href="#">LOGOUT</a></li>
+      </ul><br>
+
+    </div>
+
+    <div class="col-sm-9">
+      {% block content %}
+      <h4><small>WELCOME</small></h4>
+      <hr>
+      {% endblock %}
+<!--      <div class="row">-->
+<!--        <div class="col-sm-6">-->
+<!--&lt;!&ndash;          <img src="static/media.jpg"  alt="Avatar">&ndash;&gt;-->
+<!--        </div>-->
+
+<!--      </div>-->
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
