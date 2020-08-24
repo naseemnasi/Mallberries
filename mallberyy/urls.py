@@ -17,7 +17,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
-
 from app1 import views
 
 urlpatterns = [
@@ -25,7 +24,7 @@ urlpatterns = [
                   path("index", views.index, name='index'),
                   path('aboutus', views.aboutus, name='aboutus'),
                   path('contact', views.contact, name='contact'),
-                  path('cart', views.cart, name='cart'),
+                  path('cart', views.cart.as_view(), name='cart'),
                   path('finale', views.finale, name='finale'),
                   path('checkout', views.checkout, name='checkout'),
                   path('login', views.login, name='login'),
@@ -34,7 +33,7 @@ urlpatterns = [
                   path('ad_login', views.ad_log, name='ad_login'),
                   path('ad_addpro', views.adminpro, name="ad_add_pro"),
                   path("",views.prod,name="product"),
-                  path("details",views.details,name="pro_details"),
+                  path("details",views.details.as_view(),name="pro_details"),
                   path("shop", views.prod,name="product"),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -8,6 +8,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
 class nearestloc(models.Model):
     location = models.CharField(max_length=20, unique=True)
 
@@ -33,7 +34,6 @@ class Register(models.Model):
             return Register.objects.get(email=email)
         except:
             return False
-
 
     def isExists(self):
         if Register.objects.filter(email=self.email):
@@ -65,6 +65,15 @@ class product(models.Model):
     size = models.CharField(max_length=40, blank=True)
     stock = models.IntegerField()
 
+
+
+    def __str__(self):
+        return self.pname
+
+    @staticmethod
+    def get_products_by_id(ids):
+        return product.objects.filter(id__in=ids)
+
     @staticmethod
     def get_all_prd():
         return product.objects.all()
@@ -83,6 +92,12 @@ class product(models.Model):
         else:
             return product.get_all_prd();
 
+    @staticmethod
+    def get_products_id(ids):
+        return product.objects.filter(id__in =ids )
+
+
+
 
 class Admin_log(models.Model):
     username = models.CharField(max_length=15, unique=True)
@@ -90,5 +105,3 @@ class Admin_log(models.Model):
 
     def __str__(self):
         return self.username
-
-

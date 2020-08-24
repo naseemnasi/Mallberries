@@ -1,10 +1,13 @@
-from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
-from app1.forms import  payForm, productForm
+from app1.forms import payForm, productForm
 from app1.models import Register, payment, Category, product, Admin_log
 from django.contrib.auth.hashers import make_password, check_password
+from django.views import View
+
 
 def index(request):
     products = None
@@ -14,9 +17,9 @@ def index(request):
         products = product.get_all_prd_by_categoryID(categoryid)
     else:
         products = product.get_all_prd();
-    data = {'products': products, 'ct': ct}
-    return render(request, 'index.html', data)
+    data = {'products': products, 'ct': ct, "who": request.session.get('email')}
 
+    return render(request, 'index.html', data)
 
 
 #
@@ -33,9 +36,12 @@ def contact(request):
     return render(request, 'contact.html')
 
 
-def cart(request):
-    return render(request, 'cart.html')
-
+class cart(View):
+    def get(self, request):
+        ids = list(request.session.get('kart').keys())
+        products = product.get_products_by_id(ids)
+        print(products)
+        return render(request, 'cart.html', {'products': products})
 
 def checkout(request):
     print("enter to 11111111111")
@@ -58,7 +64,7 @@ def finale(request):
 
 def login(request):
     if request.method == 'GET':
-       return render(request, 'login.html')
+        return render(request, 'login.html')
     else:
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -66,42 +72,15 @@ def login(request):
         if customer:
             flag = check_password(password, customer.password)
             if flag:
+                request.session['customer_id'] = customer.id
+                request.session['email'] = customer.email
                 return redirect('index')
             else:
                 error_message = 'Email or Password Incorrect!!'
         else:
             error_message = 'Email or Password Incorrect!!'
-        print(customer)
-        print(email,password)
-        return render(request,'login.html',{'error':error_message})
-
-
-    # def get(self, request):
-    #     Login.return_url = request.GET.get('return_url')
-    #     return render(request, 'login.html')
-    #
-    # def post(self, request):
-    #     email = request.POST.get('email')
-    #     password = request.POST.get('password')
-    #     customer = Customer.get_customer_by_email(email)
-    #     error_message = None
-    #     if customer:
-    #         flag = check_password(password, customer.password)
-    #         if flag:
-    #             request.session['customer'] = customer.id
-    #
-    #             if Login.return_url:
-    #                 return HttpResponseRedirect(Login.return_url)
-    #             else:
-    #                 Login.return_url = None
-    #                 return redirect('homepage')
-    #         else:
-    #             error_message = 'Email or Password invalid !!'
-    #     else:
-    #         error_message = 'Email or Password invalid !!'
-    #
-    #     print(email, password)
-    #     return render(request, 'login.html', {'error': error_message})
+        print(email, password)
+        return render(request, 'login.html', {'error': error_message})
 
 
 def register(request):
@@ -131,7 +110,6 @@ def register(request):
         return redirect("index")
 
 
-
 ####products####
 
 def prod(request):
@@ -146,16 +124,45 @@ def prod(request):
     return render(request, 'product.html', data)
 
 
-def details(request):
-    products = None
-    pd = product.objects.all()
-    prdid = request.GET.get('id')
-    if prdid:
-        products = product.get_all_prd_by_id(prdid)
-    else:
-        pass;
-    data = {'products': products, 'pd': pd}
-    return render(request, 'pro_details.html',data)
+class details(View):
+    def post(self, request):
+        email = request.session.get('email')
+        pro = request.POST.get('product')
+        remove = request.POST.get('remove')
+        kart = request.session.get('kart')
+        if kart:
+            quantity = kart.get(pro)
+            if quantity:
+                if remove:
+                    if quantity <= 1:
+                        kart.pop(pro)
+                    else:
+                        kart[pro] = quantity - 1
+                else:
+                    kart[pro] = quantity + 1
+
+            else:
+                kart[pro] = 1
+        else:
+            kart = {}
+            kart[pro] = 1
+
+        request.session['kart'] = kart
+        print('cart', request.session['kart'])
+        print('you are : ', request.session.get('email'))
+        return redirect('/')
+
+    def get(self, request):
+        products = None
+        # request.session.clear()
+        pd = product.objects.all()
+        prdid = request.GET.get('id')
+        if prdid:
+            products = product.get_all_prd_by_id(prdid)
+        else:
+            pass;
+        data = {'products': products, 'pd': pd}
+        return render(request, 'pro_details.html', data)
 
 
 #######ADMIN#######
