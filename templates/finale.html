@@ -1,5 +1,7 @@
  {% extends 'index.html' %}
  {% block content %}
+ {% load cart %}
+ {% load custom_filter %}
   <section class="breadcrumb-section set-bg" data-setbg="static/image/breadcrumb.jpg">
         <div class="container">
             <div class="row">
@@ -8,8 +10,60 @@
                         <h2>THANK YOU</h2>
                         <h4 style="color:white;">FOR SHOPPING WITH US</h4>
                     </div>
+                     <a href="shop"><button type="shop" class="site-btn">CONTINUE SHOPPING</button></a>
                 </div>
             </div>
         </div>
+  </section>
+<section class="shoping-cart spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="shoping__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th class="shoping__product">Products</th>
+                                    <th>Date</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                             {% for order in orders %}
+                                <tr>
+                                    <td>{{forloop.counter }}</td>
+                                    <td class="shoping__cart__item">
+                                        <img src="media/{{order.product.pimage}}" alt="">
+                                        <h5>{{order.product.pname}}</h5>
+                                    </td>
+                                    <td >
+                                        {{order.date}}
+                                    </td>
+                                    <td class="shoping__cart__price">
+                                        {{order.price|currency}}/kg
+                                    </td>
+                                    <td class="shoping__cart__quantity">
+                                        <div class="quantity">
+                                            {{order.quantity}}
+                                        </div>
+                                    </td>
+                                    <td class="shoping__cart__total">
+                                        {{order.quantity|multiply:order.price|currency}}
+                                    </td>
+                                </tr>
+
+                             {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </section>
+
  {% endblock %}

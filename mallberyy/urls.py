@@ -18,16 +18,18 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from app1 import views
+from app1.middlewares.auth import auth_middleware
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path("index", views.index, name='index'),
                   path('aboutus', views.aboutus, name='aboutus'),
                   path('contact', views.contact, name='contact'),
-                  path('cart', views.cart.as_view(), name='cart'),
-                  path('finale', views.finale, name='finale'),
-                  path('checkout', views.checkout, name='checkout'),
+                  path('cart', views.Cart.as_view(), name='cart'),
+                  path('finale', auth_middleware(views.finale.as_view()), name='finale'),
+                  path('checkout', views.checkout.as_view(), name='checkout'),
                   path('login', views.login, name='login'),
+                  path('logout', views.logout, name='logout'),
                   path('register', views.register, name='register'),
                   path('admin_mallberry', views.admin_mall, name="admin_emall"),
                   path('ad_login', views.ad_log, name='ad_login'),

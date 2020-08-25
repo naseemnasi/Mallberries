@@ -28,11 +28,17 @@
     <div class="humberger__menu__overlay"></div>
     <div class="humberger__menu__wrapper">
         <div class="humberger__menu__logo">
-            <a href="#"><img src="static/image/emall.png" alt=""></a>
+            <a href="/"><img src="static/image/emall.png" alt=""></a>
         </div>
         <div class="humberger__menu__widget">
             <div class="header__top__right__auth">
-                <a href="login"><i class="fa fa-user"></i> Login</a>
+                {% if request.session.customer %}
+                <a href="#"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
+                {% else %}
+                <a href="register" style="color:green">Register</a>
+                <i class="fa fa-user" aria-hidden="true"></i>
+                <a href="login ">Login</a>
+                {% endif %}
             </div>
         </div>
         <nav class="humberger__menu__nav mobile-menu">
@@ -73,11 +79,13 @@
                                 <span>support 24/7 time</span>
                             </div>
                             <div class="header__top__right__social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                            </div>
-                            <div class="header__top__right__auth">
-                                <a href="login"><i class="fa fa-user"></i> Login</a>
+                                {% if request.session.customer %}
+                                <a href="logout"><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
+                                {% else %}
+                                <a href="register" style="color:green">Register</a>
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                                <a href="login ">Login</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -110,7 +118,7 @@
                 <div class="col-lg-3">
                     <div class="header__cart">
                         <ul>
-                            <li><a href="cart"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                            <li><a href="cart"><i class="fa fa-shopping-bag"></i> <span>{{request.session.kart.keys|length}}</span></a></li>
                         </ul>
                     </div>
                 </div>

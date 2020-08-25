@@ -1,3 +1,6 @@
+import _datetime
+from datetime import datetime
+
 from django.db import models
 
 
@@ -14,6 +17,14 @@ class nearestloc(models.Model):
 
     def __str__(self):
         return self.location
+
+
+class location(models.Model):
+    location = models.CharField(max_length=20, unique=True)
+
+    def __str__(self):
+        return self.location
+
 
 
 class Register(models.Model):
@@ -53,6 +64,7 @@ class payment(models.Model):
 
     def __str__(self):
         return self.name
+
 
 
 class product(models.Model):
@@ -97,6 +109,25 @@ class product(models.Model):
         return product.objects.filter(id__in =ids )
 
 
+class Order(models.Model):
+    product = models.ForeignKey(product,
+                                on_delete=models.CASCADE)
+    customer = models.ForeignKey(Register,
+                                 on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+    price = models.IntegerField()
+    # location = models.ForeignKey(location, on_delete=models.CASCADE, )
+    address = models.CharField(max_length=50, default='', blank=True)
+    phone = models.CharField(max_length=50, default='', blank=True)
+    date = models.DateField(default=datetime.today)
+    status = models.BooleanField(default=False)
+
+    def placeOrder(self):
+        self.save()
+
+    @staticmethod
+    def get_orders_by_customer(customer_id):
+        return Order.objects.filter(customer=customer_id).order_by('-date')
 
 
 class Admin_log(models.Model):

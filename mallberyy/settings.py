@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'app1.middlewares.auth.auth_middleware'
 ]
 
 ROOT_URLCONF = 'mallberyy.urls'
@@ -77,13 +78,14 @@ WSGI_APPLICATION = 'mallberyy.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, "db.sqlite3"),
+        'NAME': os.path.join(BASE_DIR, "db.sq1lite3"),
     }
 }
 
 
 # Password validation
-# https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/3.0/ref
+# /settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {

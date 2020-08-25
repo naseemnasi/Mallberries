@@ -4,9 +4,11 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from app1.forms import payForm, productForm
-from app1.models import Register, payment, Category, product, Admin_log
+from app1.models import Register, payment, Category, product, Admin_log, Order
 from django.contrib.auth.hashers import make_password, check_password
 from django.views import View
+from app1.middlewares.auth import auth_middleware
+from django.utils.decorators import method_decorator
 
 
 def index(request):
@@ -36,34 +38,56 @@ def contact(request):
     return render(request, 'contact.html')
 
 
-class cart(View):
+class Cart(View):
     def get(self, request):
+        kart = request.session.get('kart')
+        if not kart:
+            request.session['kart'] = {}
         ids = list(request.session.get('kart').keys())
         products = product.get_products_by_id(ids)
         print(products)
         return render(request, 'cart.html', {'products': products})
 
-def checkout(request):
-    print("enter to 11111111111")
-    form = payForm()
-    if request.method == 'POST':
-        print("enter to 222222222222222222")
-        form = payForm(request.POST, request.FILES)
-        if form.is_valid():
-            print("enter to 3333333333333333333333")
-            form.save()
-            return redirect('finale')
-        # else:
-        #     return("*****ERROR IN VALIDATION******")
-    return render(request, 'checkout.html', {"form": form})
+
+class checkout(View):
+    @method_decorator(auth_middleware)
+    def get(self, request):
+        return render(request, 'checkout.html')
+
+    def post(self, request):
+        address = request.POST.get('address')
+        phone = request.POST.get('phone')
+        customer = request.session.get('customer')
+        kart = request.session.get('kart')
+        products = product.get_products_by_id(list(kart.keys()))
+        print(address, phone, customer, kart, products)
+
+        for p in products:
+            print(kart.get(str(p.id)))
+            order = Order(customer=Register(id=customer),
+                          product=p,
+                          price=p.price,
+                          address=address,
+                          phone=phone,
+                          quantity=kart.get(str(p.id)))
+            order.placeOrder()
+        request.session['kart'] = {}
+
+        return redirect('finale')
 
 
-def finale(request):
-    return render(request, 'finale.html')
+class finale(View):
+    def get(self,request):
+        customer = request.session.get('customer')
+        orders = Order.get_orders_by_customer(customer)
+        print(orders)
+        return render(request, 'finale.html',{"orders":orders})
 
 
 def login(request):
+    return_url = None
     if request.method == 'GET':
+        login.return_url = request.GET.get('return_url')
         return render(request, 'login.html')
     else:
         email = request.POST.get('email')
@@ -72,15 +96,24 @@ def login(request):
         if customer:
             flag = check_password(password, customer.password)
             if flag:
-                request.session['customer_id'] = customer.id
-                request.session['email'] = customer.email
-                return redirect('index')
+                request.session['customer'] = customer.id
+
+                if login.return_url:
+                    return HttpResponseRedirect(login.return_url)
+                else:
+                    login.return_url = None
+                    return redirect('index')
             else:
                 error_message = 'Email or Password Incorrect!!'
         else:
             error_message = 'Email or Password Incorrect!!'
         print(email, password)
         return render(request, 'login.html', {'error': error_message})
+
+
+def logout(request):
+    request.session.clear()
+    return redirect('login')
 
 
 def register(request):
@@ -107,7 +140,7 @@ def register(request):
             customer.password = make_password(customer.password)
 
         customer.register()
-        return redirect("index")
+        return redirect("login")
 
 
 ####products####
@@ -126,31 +159,29 @@ def prod(request):
 
 class details(View):
     def post(self, request):
-        email = request.session.get('email')
-        pro = request.POST.get('product')
+        product = request.POST.get('product')
         remove = request.POST.get('remove')
         kart = request.session.get('kart')
         if kart:
-            quantity = kart.get(pro)
+            quantity = kart.get(product)
             if quantity:
                 if remove:
                     if quantity <= 1:
-                        kart.pop(pro)
+                        kart.pop(product)
                     else:
-                        kart[pro] = quantity - 1
+                        kart[product] = quantity - 1
                 else:
-                    kart[pro] = quantity + 1
+                    kart[product] = quantity + 1
 
             else:
-                kart[pro] = 1
+                kart[product] = 1
         else:
             kart = {}
-            kart[pro] = 1
+            kart[product] = 1
 
         request.session['kart'] = kart
         print('cart', request.session['kart'])
-        print('you are : ', request.session.get('email'))
-        return redirect('/')
+        return redirect("/")
 
     def get(self, request):
         products = None
