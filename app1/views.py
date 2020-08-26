@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
-from app1.forms import payForm, productForm
-from app1.models import Register, payment, Category, product, Admin_log, Order
+from app1.forms import productForm
+from app1.models import Register, Category, product, Admin_log, Order
 from django.contrib.auth.hashers import make_password, check_password
 from django.views import View
 from app1.middlewares.auth import auth_middleware
@@ -158,6 +158,18 @@ def prod(request):
 
 
 class details(View):
+    def get(self, request):
+        products = None
+        # request.session.clear()
+        pd = product.objects.all()
+        prdid = request.GET.get('id')
+        if prdid:
+            products = product.get_all_prd_by_id(prdid)
+        else:
+            pass;
+        data = {'products': products, 'pd': pd}
+        return render(request, 'pro_details.html', data)
+
     def post(self, request):
         product = request.POST.get('product')
         remove = request.POST.get('remove')
@@ -181,19 +193,9 @@ class details(View):
 
         request.session['kart'] = kart
         print('cart', request.session['kart'])
-        return redirect("/")
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-    def get(self, request):
-        products = None
-        # request.session.clear()
-        pd = product.objects.all()
-        prdid = request.GET.get('id')
-        if prdid:
-            products = product.get_all_prd_by_id(prdid)
-        else:
-            pass;
-        data = {'products': products, 'pd': pd}
-        return render(request, 'pro_details.html', data)
+
 
 
 #######ADMIN#######

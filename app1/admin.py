@@ -1,13 +1,11 @@
 from django.contrib import admin
-from app1.models import Register, payment, nearestloc, Category, product, Admin_log, Order, location
+from app1.models import Register,Category, product, Admin_log, Order
 
 # Register your models here.
 
 admin.site.register(Register)
-admin.site.register(payment)
 admin.site.register(Order)
-admin.site.register(location)
-admin.site.register(nearestloc)
+
 
 
 class catAdmin(admin.ModelAdmin):

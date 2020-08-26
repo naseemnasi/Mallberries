@@ -18,6 +18,11 @@
             <div class="checkout__form">
                 <h4>Billing Details</h4>
                 <form action="checkout" method="POST">{% csrf_token %}
+                    {% if error %}
+                     <div class="alert alert-danger" role="alert">
+                    {{error}}
+					 </div>
+					{% endif %}
                     <div class="row">
                         <div class="col-lg-8 col-md-6">
 <!--                            <div class="row">-->
@@ -30,7 +35,7 @@
 <!--                            </div>-->
                             <div class="checkout__input">
                                 <p>Address<span>*</span></p>
-                                <input type="text" placeholder="Street Address" name="address" class="checkout__input__add">
+                                <input type="text" placeholder="Street Address" name="address" value="{{values.address}}" class="checkout__input__add">
                             </div>
 <!--                            <div class="checkout__input">-->
 <!--                                <p>Town/City<span>*</span></p>-->
@@ -40,7 +45,7 @@
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>Phone<span>*</span></p>
-                                        <input type="text" name="phone">
+                                        <input type="text" name="phone" value="{{values.phone}}">
                                         <p>Only COD Available for Now!</p>
                                     </div>
                                      <a href="finale"><button type="submit" class="site-btn">PLACE ORDER</button></a>

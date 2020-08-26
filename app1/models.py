@@ -12,19 +12,6 @@ class Category(models.Model):
         return self.name
 
 
-class nearestloc(models.Model):
-    location = models.CharField(max_length=20, unique=True)
-
-    def __str__(self):
-        return self.location
-
-
-class location(models.Model):
-    location = models.CharField(max_length=20, unique=True)
-
-    def __str__(self):
-        return self.location
-
 
 
 class Register(models.Model):
@@ -51,19 +38,6 @@ class Register(models.Model):
             return True
 
         return False
-
-
-class payment(models.Model):
-    nearestloc = models.ForeignKey(nearestloc, on_delete=models.CASCADE, )
-    # qty = models.IntegerField()
-    # deliveryMode = models.CharField(max_length=50)
-    name = models.CharField(max_length=100)
-    address = models.CharField(max_length=100)
-    phone = models.IntegerField()
-    notes = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.name
 
 
 
@@ -109,6 +83,15 @@ class product(models.Model):
         return product.objects.filter(id__in =ids )
 
 
+# class Landmark(models.Model):
+#     name = models.CharField(max_length=100)
+#
+#     def __str__(self):
+#         return self.name
+
+#git commit -m "modelclear"
+#git push -u origin master
+
 class Order(models.Model):
     product = models.ForeignKey(product,
                                 on_delete=models.CASCADE)
@@ -116,9 +99,10 @@ class Order(models.Model):
                                  on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     price = models.IntegerField()
-    # location = models.ForeignKey(location, on_delete=models.CASCADE, )
-    address = models.CharField(max_length=50, default='', blank=True)
-    phone = models.CharField(max_length=50, default='', blank=True)
+    # location = models.ForeignKey(Landmark, on_delete=models.CASCADE, )
+    address = models.CharField(max_length=50)
+    # customer_name = models.CharField(max_length=255)
+    phone = models.CharField(max_length=50)
     date = models.DateField(default=datetime.today)
     status = models.BooleanField(default=False)
 
