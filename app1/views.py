@@ -61,7 +61,7 @@ class checkout(View):
         customer = request.session.get('customer')
         kart = request.session.get('kart')
         products = product.get_products_by_id(list(kart.keys()))
-        print(address, phone, customer, kart, products,customer_name)
+        print(address, phone, customer, kart, products, customer_name)
 
         for p in products:
             print(kart.get(str(p.id)))
@@ -79,11 +79,11 @@ class checkout(View):
 
 
 class finale(View):
-    def get(self,request):
+    def get(self, request):
         customer = request.session.get('customer')
         orders = Order.get_orders_by_customer(customer)
         print(orders)
-        return render(request, 'finale.html',{"orders":orders})
+        return render(request, 'finale.html', {"orders": orders})
 
 
 def login(request):
@@ -118,31 +118,46 @@ def logout(request):
     return redirect('login')
 
 
-def register(request):
-    if request.method == 'GET':
+class register(View):
+    def get(self,request):
         return render(request, 'register.html')
 
-    else:
+    def post(self,request):
         postData = request.POST
         name = postData.get('name')
         email = postData.get('email')
         phone = postData.get('phone')
         password = postData.get('password')
+        # validation
+        value = {
+            'email': email
+        }
+        error_message = None
 
         customer = Register(name=name,
                             email=email,
                             phone=phone,
                             password=password)
-        error_message = None
-        isExists = customer.isExists()
-        if isExists:
-            error_message = 'Email Already Exist'
+        error_message = self.validateCustomer(customer)
         if not error_message:
-            print(name, email, phone, password)
-            customer.password = make_password(customer.password)
+               print(name, email, phone, password)
+               customer.password = make_password(customer.password)
+               customer.register()
+               return redirect("login")
+        else:
+            data = {
+                'error': error_message,
+                'values': value
+            }
+            return render(request, 'register.html', data)
 
-        customer.register()
-        return redirect("login")
+    def validateCustomer(self, customer):
+        error_message = None;
+        if customer.isExists():
+           error_message = 'Email Address Already Registered..'
+
+        return error_message
+    # saving
 
 
 ####products####
@@ -196,8 +211,6 @@ class details(View):
         request.session['kart'] = kart
         print('cart', request.session['kart'])
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-
 
 
 #######ADMIN#######

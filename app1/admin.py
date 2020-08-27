@@ -4,7 +4,7 @@ from app1.models import Register,Category, product, Admin_log, Order
 # Register your models here.
 
 admin.site.register(Register)
-admin.site.register(Order)
+# admin.site.register(Order)
 # admin.site.register(Landmark)
 
 
@@ -21,4 +21,10 @@ class proAdmin(admin.ModelAdmin):
 
 
 admin.site.register(product, proAdmin)
+
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ("customer_name", "date")
+
+
+admin.site.register(Order, OrderAdmin)
 admin.site.register(Admin_log)

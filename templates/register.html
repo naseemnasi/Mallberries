@@ -14,30 +14,8 @@
 	</head>
 
 	<body>
-		  {% if form.errors %}
-		  {% for field in form %}
-			  {% for error in field.errors %}
-				  <div class="alert alert-danger">
-					  <strong>{{field.label}} : {{ error|escape }}</strong>
-				  </div>
-			  {% endfor %}
-		  {% endfor %}
-		  {% for error in form.non_field_errors %}
-			  <div class="alert alert-danger">
-				  <strong>{{ error|escape }}</strong>
-			  </div>
-		  {% endfor %}
-		  {% endif %}
-		  {% if form.radio.errors %}
-			<div class="alert alert-danger">
-				<strong>{{ form.radio.errors|escape }}</strong>
-			</div>
-		{% endif %}
-		{% if error %}
-		 <div class="alert alert-danger" role="alert">
-		{{error}}
-		 </div>
-		{% endif %}
+
+
 		<div class="wrapper" style="background:white;">
 			<div class="inner">
 				<div class="image-holder">
@@ -47,22 +25,27 @@
 				<form method="POST" enctype="multipart/form-data" role="form">{% csrf_token %}
 					<h3>Registration Form</h3>
 					<div class="form-wrapper">
-						<input type="text" placeholder="Your Name" name="name"  value="{{values.name}}" class="form-control">
+						<input required type="text" placeholder="Your Name" name="name"  value="{{values.name}}" class="form-control">
 						<i class="zmdi zmdi-account"></i>
 					</div>
 					<div class="form-wrapper">
-						<input type="text" placeholder="Email Address" name="email"  value="{{values.email}}" class="form-control">
+						<input required type="text" placeholder="example@gmail.com" name="email"  value="{{values.email}}" class="form-control">
 						<i class="zmdi zmdi-email"></i>
 					</div>
 					<div class="form-wrapper">
-						<input type="text" placeholder="Phone Number" name="phone"  value="{{values.phone}}" class="form-control">
+						<input required type="text" placeholder="Phone Number" name="phone"  value="{{values.phone}}" class="form-control">
 						<i class="zmdi zmdi-phone"></i>
 					</div>
 
 					<div class="form-wrapper">
-						<input type="password" placeholder="Password" name="password"  value="{{values.password}}" class="form-control">
+						<input required type="password" placeholder="Password" name="password"  value="{{values.password}}" class="form-control">
 						<i class="zmdi zmdi-lock"></i>
 					</div>
+					{% if error%}
+					<div class="alert alert-danger" style="color:red;" role="alert">
+						{{error}}
+					</div>
+					{% endif %}
 					<button type="submit" style="margin-bottom:40px;">Register
 						<i class="zmdi zmdi-arrow-right"></i>
 					</button>
