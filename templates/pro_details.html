@@ -1,5 +1,6 @@
 {% extends 'index.html' %}
 {% block content %}
+{% load custom_filter %}
 {% load cart %}
 
 <!-- Breadcrumb Section Begin -->
@@ -31,7 +32,7 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="product__details__text">
                         <h3>{{product.pname}}</h3>
-                        <div class="product__details__price">${{product.price}}/kg</div>
+                        <div class="product__details__price">{{product.price|currency}}/kg</div>
                         <p>Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vestibulum ac diam sit amet quam
                             vehicula elementum sed sit amet dui. Sed porttitor lectus nibh. Vestibulum ac diam sit amet
                             quam vehicula elementum sed sit amet dui. Proin eget tortor risus.</p>
@@ -51,7 +52,7 @@
                                 </form>
                             </div>
                             {% else %}
-                            <form action="#" method="POST">{% csrf_token %}
+                            <form action="details" method="POST">{% csrf_token %}
                             <input hidden type="text" name="product" value="{{product.id}}">
                             <input type="submit" class="primary-btn" value ="ADD TO CART">
                             </form>
@@ -66,5 +67,6 @@
             </div>
         </div>
     </section>
+
 
 {% endblock %}

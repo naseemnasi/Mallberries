@@ -25,27 +25,35 @@
 					{% endif %}
                     <div class="row">
                         <div class="col-lg-8 col-md-6">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>Name<span>*</span></p>
+                                        <input required type="text" name="customer_name">
+                                    </div>
+                                </div>
+                            </div>
 <!--                            <div class="row">-->
 <!--                                <div class="col-lg-6">-->
 <!--                                    <div class="checkout__input">-->
-<!--                                        <p>Name<span>*</span></p>-->
-<!--                                        <input type="text" name="name">-->
+<!--                                        <p>Location<span>*</span></p>-->
+<!--                                        <select name="location">-->
+<!--                                          <option value="l1">Palangad</option>-->
+<!--                                          <option value="l2">Kodoli</option>-->
+<!--                                        </select>-->
 <!--                                    </div>-->
 <!--                                </div>-->
 <!--                            </div>-->
+<!--                             <br>-->
                             <div class="checkout__input">
                                 <p>Address<span>*</span></p>
-                                <input type="text" placeholder="Street Address" name="address" value="{{values.address}}" class="checkout__input__add">
+                                <input required type="text" placeholder="Street Address" name="address" value="{{values.address}}" class="checkout__input__add">
                             </div>
-<!--                            <div class="checkout__input">-->
-<!--                                <p>Town/City<span>*</span></p>-->
-<!--                                <input type="text">-->
-<!--                            </div>-->
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>Phone<span>*</span></p>
-                                        <input type="text" name="phone" value="{{values.phone}}">
+                                        <input required type="text" name="phone" value="{{values.phone}}">
                                         <p>Only COD Available for Now!</p>
                                     </div>
                                      <a href="finale"><button type="submit" class="site-btn">PLACE ORDER</button></a>

@@ -55,16 +55,18 @@ class checkout(View):
         return render(request, 'checkout.html')
 
     def post(self, request):
+        customer_name = request.POST.get('customer_name')
         address = request.POST.get('address')
         phone = request.POST.get('phone')
         customer = request.session.get('customer')
         kart = request.session.get('kart')
         products = product.get_products_by_id(list(kart.keys()))
-        print(address, phone, customer, kart, products)
+        print(address, phone, customer, kart, products,customer_name)
 
         for p in products:
             print(kart.get(str(p.id)))
             order = Order(customer=Register(id=customer),
+                          customer_name=customer_name,
                           product=p,
                           price=p.price,
                           address=address,

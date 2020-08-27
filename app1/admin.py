@@ -5,6 +5,7 @@ from app1.models import Register,Category, product, Admin_log, Order
 
 admin.site.register(Register)
 admin.site.register(Order)
+# admin.site.register(Landmark)
 
 
 

@@ -82,15 +82,13 @@ class product(models.Model):
     def get_products_id(ids):
         return product.objects.filter(id__in =ids )
 
-
+#
 # class Landmark(models.Model):
 #     name = models.CharField(max_length=100)
 #
 #     def __str__(self):
 #         return self.name
 
-#git commit -m "modelclear"
-#git push -u origin master
 
 class Order(models.Model):
     product = models.ForeignKey(product,
@@ -99,12 +97,12 @@ class Order(models.Model):
                                  on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     price = models.IntegerField()
-    # location = models.ForeignKey(Landmark, on_delete=models.CASCADE, )
     address = models.CharField(max_length=50)
-    # customer_name = models.CharField(max_length=255)
+    customer_name = models.CharField(max_length=255)
     phone = models.CharField(max_length=50)
     date = models.DateField(default=datetime.today)
     status = models.BooleanField(default=False)
+    # location = models.ForeignKey(Landmark,on_delete=models.CASCADE, )
 
     def placeOrder(self):
         self.save()

@@ -1,5 +1,6 @@
 {% extends 'index.html' %}
 {% block content %}
+{% load custom_filter %}
 
 
 <!-- Breadcrumb Section Begin -->
@@ -48,7 +49,7 @@
                                 </div>
                                 <div class="product__item__text">
                                     <h6><a href="#">{{product.pname}}</a></h6>
-                                    <h5>${{product.price}}</h5>
+                                    <h5>{{product.price|currency}}</h5>
                                 </div>
                             </div>
                         </a>
