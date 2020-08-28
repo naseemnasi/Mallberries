@@ -1,0 +1,41 @@
+{% extends 'ad_mall.html' %}
+{% block content %}
+
+<style>
+ table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+<div class="lstable" style="margin-top:50px">
+    <table>
+          <tr>
+            <th>NO:</th>
+            <th>CUSTOMER NAME</th>
+            <th>USER EMAIL</th>
+            <th>PHONE</th>
+
+          </tr>
+      {% for register in registers %}
+          <tr>
+            <td>{{forloop.counter }}</td>
+            <td>{{register.name}}</td>
+            <td>{{register.email}}</td>
+            <td>{{register.phone}}</td>
+
+          </tr>
+     {% endfor %}
+    </table>
+    </div>
+{% endblock %}

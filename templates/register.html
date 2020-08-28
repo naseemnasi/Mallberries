@@ -11,6 +11,16 @@
 
 		<!-- STYLE CSS -->
 		<link rel="stylesheet" href="{% static 'css/style0.css'%}">
+<script>
+function myFunction() {
+  var x = document.getElementById("myInput");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
+</script>
 	</head>
 
 	<body>
@@ -38,9 +48,10 @@
 					</div>
 
 					<div class="form-wrapper">
-						<input required type="password" placeholder="Password" name="password"  value="{{values.password}}" class="form-control">
+						<input required type="password" placeholder="Password" name="password" id="myInput"  value="{{values.password}}" class="form-control">
 						<i class="zmdi zmdi-lock"></i>
 					</div>
+					<input type="checkbox" onclick="myFunction()">Show Password
 					{% if error%}
 					<div class="alert alert-danger" style="color:red;" role="alert">
 						{{error}}

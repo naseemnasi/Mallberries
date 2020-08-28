@@ -19,9 +19,9 @@ def index(request):
         products = product.get_all_prd_by_categoryID(categoryid)
     else:
         products = product.get_all_prd();
-    data = {'products': products, 'ct': ct, "who": request.session.get('email')}
+    data = {'products': products, 'ct': ct}
 
-    return render(request, 'index.html', data)
+    return render(request, 'index.html', data,)
 
 
 #
@@ -119,10 +119,10 @@ def logout(request):
 
 
 class register(View):
-    def get(self,request):
+    def get(self, request):
         return render(request, 'register.html')
 
-    def post(self,request):
+    def post(self, request):
         postData = request.POST
         name = postData.get('name')
         email = postData.get('email')
@@ -140,10 +140,10 @@ class register(View):
                             password=password)
         error_message = self.validateCustomer(customer)
         if not error_message:
-               print(name, email, phone, password)
-               customer.password = make_password(customer.password)
-               customer.register()
-               return redirect("login")
+            print(name, email, phone, password)
+            customer.password = make_password(customer.password)
+            customer.register()
+            return redirect("login")
         else:
             data = {
                 'error': error_message,
@@ -154,7 +154,7 @@ class register(View):
     def validateCustomer(self, customer):
         error_message = None;
         if customer.isExists():
-           error_message = 'Email Address Already Registered..'
+            error_message = 'Email Address Already Registered..'
 
         return error_message
     # saving
@@ -216,7 +216,9 @@ class details(View):
 #######ADMIN#######
 
 def admin_mall(request):
-    return render(request, 'ad_mall.html')
+    if not request.session.has_key('username'):
+        return HttpResponseRedirect('ad_login')
+    return render(request, 'ad_mall.html',{"logged_user": request.session['username']})
 
 
 def ad_log(request):
@@ -241,7 +243,16 @@ def ad_log(request):
     return render(request, "ad_login.html", {"login_status": login_status})
 
 
+def ad_logout(request):
+    try:
+        del request.session['username']
+    except:
+        pass
+    return HttpResponseRedirect("ad_login")
+
 def adminpro(request):
+    if not request.session.has_key('username'):
+        return HttpResponseRedirect('ad_login')
     print("new")
     form = productForm()
     if request.method == 'POST':
@@ -253,3 +264,41 @@ def adminpro(request):
         else:
             return HttpResponse("*****ERROR IN VALIDATION******")
     return render(request, 'ad_addpro.html', {"form": form})
+
+
+def ad_proList(request):
+    if not request.session.has_key('username'):
+        return HttpResponseRedirect('ad_login')
+    products = product.get_all_prd();
+    return render(request, 'ad_proList.html', {"products": products})
+
+
+def pdelete(request, pro_id):
+    ob = product.objects.get(id=pro_id)
+    if ob:
+        ob.delete()
+        return redirect('ad_proList')
+
+
+def ad_orders(request):
+    if not request.session.has_key('username'):
+        return HttpResponseRedirect('ad_login')
+    orders = Order.objects.all();
+    customer = request.session.get('customer')
+    pd = Order.get_orders_by_customer(customer)
+    data = {"orders": orders,
+            "pd": pd}
+    return render(request, 'ad_orders.html', data)
+
+
+def odelete(request, order_id):
+    ob = Order.objects.get(id=order_id)
+    if ob:
+        ob.delete()
+        return redirect('ad_orders')
+
+def ad_customerList(request):
+    if not request.session.has_key('username'):
+        return HttpResponseRedirect('ad_login')
+    registers = Register.objects.all()
+    return render(request, 'ad_customerList.html', {"registers": registers})

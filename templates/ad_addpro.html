@@ -55,19 +55,19 @@ function myFunction() {
         <form method = "POST" enctype="multipart/form-data">{% csrf_token %}
 
             <label>Product Name  : </label>
-            <input type="text" name="{{ form.pname.name }}"><br><br>
+            <input required type="text" name="{{ form.pname.name }}"><br><br>
             <label>Category  : </label>
-            <select name="{{ form.c_name.name }}">
-             {% for choice in form.c_name.field.choices %}
+            <select name="{{ form.category.name }}">
+             {% for choice in form.category.field.choices %}
               <option value="{{ choice.0 }}"> {{ choice.1 }} </option>
              {% endfor %}
             </select><br><br>
             <label>Image : </label>
-            <input type="file"  id="myFile"  name="{{ form.pimage.name }}" accept="image/*" onchange="loadFile(event)" ><br>
+            <input required type="file"  id="myFile"  name="{{ form.pimage.name }}" accept="image/*" onchange="loadFile(event)" ><br>
             <label>Description : </label>
             <input type="text"  name="{{ form.pdesc.name }}" ><br><br><br>
             <label>Price :&nbsp; </label>
-            <input type="text" name="{{ form.price.name }}"><br><br>
+            <input required type="text" name="{{ form.price.name }}"><br><br>
             <label>Size : &nbsp;</label>
             <input type="text" name="{{ form.size.name }}"><br><br>
             <label>Stock : </label>

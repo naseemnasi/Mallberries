@@ -1,0 +1,53 @@
+{% extends 'ad_mall.html' %}
+{% block content %}
+
+<style>
+ table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+<script>
+function myFunction() {
+        return confirm("Press OK to Remove this order!");
+      }
+</script>
+<div class="lstable" style="margin-top:50px">
+    <table>
+          <tr>
+            <th>DATE</th>
+            <th>CUSTOMER</th>
+            <th>PRODUCTS</th>
+            <th>ADDRESS</th>
+            <th>PHONE</th>
+            <th></th>
+          </tr>
+      {% for order in orders %}
+
+          <tr>
+            <td>{{order.date}}</td>
+            <td>{{order.customer_name}}</td>
+            <td>
+            {{order.product}} × {{order.quantity}}
+            </td>
+            <td>{{order.address}}</td>
+            <td>{{order.phone}}</td>
+            <td><a href="odelete/{{order.id}}" onclick="return myFunction();">REMOVE</a></td>
+          </tr>
+     {% endfor %}
+
+    </table>
+
+    </div>
+{% endblock %}

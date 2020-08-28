@@ -31,11 +31,20 @@ urlpatterns = [
                   path('login', views.login, name='login'),
                   path('logout', views.logout, name='logout'),
                   path('register', views.register.as_view(), name='register'),
-                  path('admin_mallberry', views.admin_mall, name="admin_emall"),
-                  path('ad_login', views.ad_log, name='ad_login'),
-                  path('ad_addpro', views.adminpro, name="ad_add_pro"),
                   path("",views.prod,name="product"),
                   path("details",views.details.as_view(),name="pro_details"),
                   path("shop", views.prod,name="product"),
+
+                  ##admin side
+                  path('admin_mallberry', views.admin_mall, name="admin_emall"),
+                  path('ad_login', views.ad_log, name='ad_login'),
+                  path('ad_logout', views.ad_logout, name='ad_logout'),
+                  path('ad_addpro', views.adminpro, name="ad_addpro"),
+                  path('ad_proList', views.ad_proList, name="ad_proList"),
+                  path('ad_orders', views.ad_orders, name="ad_orders"),
+                  path('ad_customerList', views.ad_customerList, name="ad_customerList"),
+                  path('pdelete/<int:pro_id>', views.pdelete, name='pdelete'),
+                  path('odelete/<int:order_id>', views.odelete, name='odelete'),
+
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

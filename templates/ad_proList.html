@@ -1,0 +1,47 @@
+{% extends 'ad_mall.html' %}
+{% block content %}
+
+<style>
+ table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+<script>
+function myFunction() {
+        return confirm("Press OK to Delete Record !");
+      }
+</script>
+ <div class="lstable" style="margin-top:50px">
+    <table>
+          <tr>
+            <th>IMAGE</th>
+            <th>NAME</th>
+            <th>DESCRIPTION</th>
+            <th>PRICE</th>
+            <th></th>
+          </tr>
+      {% for product in products %}
+          <tr>
+            <td><img src="media/{{product.pimage}}" alt="" width="60" height="60"></td>
+            <td>{{product.pname}}</td>
+            <td>{{product.pdesc}}</td>
+            <td>{{product.price}}</td>
+            <td><a href="pdelete/{{product.id}}" onclick="return myFunction();">DELETE</a></td>
+          </tr>
+     {% endfor %}
+    </table>
+
+    </div>
+{% endblock %}
